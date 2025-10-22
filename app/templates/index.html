@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>To-Do App</title>
+  <style>
+    body { font-family: Arial; margin: 40px; }
+    h1 { color: #333; }
+    input { padding: 8px; }
+    button { padding: 8px; margin-left: 4px; }
+    li { margin-top: 5px; }
+  </style>
+</head>
+<body>
+  <h1>📝 To-Do List</h1>
+  <form action="/add" method="POST">
+    <input type="text" name="task" placeholder="Enter a task" required>
+    <button type="submit">Add</button>
+  </form>
+  <ul>
+    {% for todo in todos %}
+      <li>{{ todo[1] }} <a href="/delete/{{ todo[0] }}">❌</a></li>
+    {% endfor %}
+  </ul>
+</body>
+</html>

@@ -1,0 +1,36 @@
+version: "3.8"
+
+services:
+  web:
+    build: .
+    container_name: todo-web
+    # Map host port 5000 to container port 5000
+    ports:
+      - "5008:5000"
+    # Wait for the 'db' service to start before starting 'web'
+    depends_on:
+      - db
+    # Pass environment variables needed by app.py
+    environment:
+      - MYSQL_HOST=db             # <-- Crucial: The service name of the database container
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=root
+      - MYSQL_DATABASE=todo_db
+
+  db:
+    image: mysql:8.0
+    container_name: todo-db
+    restart: always
+    # Set the credentials for the MySQL container
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: todo_db
+    # You generally don't need to expose MySQL to the host, but here for optional access:
+    ports:
+      - "3307:3306"
+    # Persist the database data outside the container
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
